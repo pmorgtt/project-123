@@ -1,0 +1,100 @@
+{
+    "@context": "https://w3id.org/ro/crate/1.1/context",
+    "@graph": [
+        {
+            "@id": "ro-crate-preview.html",
+            "@type": "CreativeWork",
+            "about": {
+                "@id": "./"
+            }
+        },
+        {
+            "@id": "./",
+            "@type": "Dataset",
+            "datePublished": "2025-01-15T23:28:58+00:00",
+            "description": "This is a test project",
+            "hasPart": [
+                {
+                    "@id": "governance/project.yaml"
+                },
+                {
+                    "@id": "metadata/dataset_02.yaml"
+                },
+                {
+                    "@id": "metadata/dataset_01.yaml"
+                }
+            ],
+            "license": "<a href=\"https://opensource.org/license/mit\">MIT License</a>",
+            "mainEntity": {
+                "@id": "proj-83fe90cf-b9f9-4333-ae37-5a364370a794"
+            },
+            "name": "Test Project",
+            "publisher": {
+                "@id": "<a href=\"https://github.com/lsc-sde-crates\">LSC SDE</a>"
+            }
+        },
+        {
+            "@id": "ro-crate-metadata.json",
+            "@type": "CreativeWork",
+            "about": {
+                "@id": "./"
+            },
+            "conformsTo": {
+                "@id": "https://w3id.org/ro/crate/1.1"
+            },
+            "isBasedOn": {
+                "@id": "repo-83fe90cf-b9f9-4333-ae37-5a364370a794"
+            }
+        },
+        {
+            "@id": "proj-83fe90cf-b9f9-4333-ae37-5a364370a794",
+            "@type": "Project",
+            "identifier": "lscsde-ref-2",
+            "memberOf": [
+                {
+                    "@id": "requester-83fe90cf-b9f9-4333-ae37-5a364370a794"
+                }
+            ],
+            "name": "Test Project"
+        },
+        {
+            "@id": "requester-org-83fe90cf-b9f9-4333-ae37-5a364370a794",
+            "@type": "Organisation",
+            "name": "University of Manchester",
+            "url": "https://www.manchester.ac.uk"
+        },
+        {
+            "@id": "requester-83fe90cf-b9f9-4333-ae37-5a364370a794",
+            "@type": "Person",
+            "affiliation": {
+                "@id": "requester-org-83fe90cf-b9f9-4333-ae37-5a364370a794"
+            },
+            "name": "Dr. Joe Bloggs"
+        },
+        {
+            "@id": "repo-83fe90cf-b9f9-4333-ae37-5a364370a794",
+            "@type": "SoftwareSourceCode",
+            "codeRepository": "https://github.com/lsc-sde-crates/proj-83fe90cf-b9f9-4333-ae37-5a364370a794",
+            "description": "This LSC-DIP RO-Crate is versioned and stored in a Git repository on GitHub.",
+            "name": "Github Repo"
+        },
+        {
+            "@id": "governance/project.yaml",
+            "@type": "File",
+            "description": "This is a test project",
+            "name": "Test Project"
+        },
+        {
+            "@id": "metadata/dataset_02.yaml",
+            "@type": "File",
+            "description": "OMOP conformant vocabulary data",
+            "name": "vocab"
+        },
+        {
+            "@id": "metadata/dataset_01.yaml",
+            "@type": "File",
+            "description": "OMOP conformant data for antimicrobial stewarship",
+            "name": "p_abx"
+        }
+    ]
+}

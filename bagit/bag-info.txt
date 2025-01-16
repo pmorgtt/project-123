@@ -1,0 +1,8 @@
+Bag-Software-Agent: bagit.py v1.8.1 <https://github.com/LibraryOfCongress/bagit-python>
+Bagging-Date: 2025-01-15
+Contact-Email: lsc.sde@test.com
+Contact-Name: LSC SDE Program Team
+External-Identifier: urn:uuid:d90c1f0e-dcb6-a623-0540-02f29b96fb5d
+Organization-Address: Lancashire Teaching Hospitals NHS Trust, PR2 9HT
+Payload-Oxum: 11021.5
+Source-Organization: LSC SDE
