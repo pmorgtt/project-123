@@ -3,11 +3,39 @@ name: TREloader Workflow
 on:
     workflow_dispatch:
 
+env:
+ GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
     run-job:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout repository
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
+
+            - name: Clone cr8tor repository
+              run: |
+                wget -qO- https://astral.sh/uv/install.sh | sh
+                export PATH=$HOME/.local/bin:$PATH
+                git clone https://github.com/lsc-sde-crates/cr8tor.git
+                uv sync --directory cr8tor
+
+            - name: Run cr8tor CLI
+              run: |
+                source cr8tor/.venv/bin/activate
+                cr8tor create -i ./resources
+
+            - name: Commit and push changes
+              run: |
+                git config --global user.name "github-actions[bot]"
+                git config --global user.email "github-actions[bot]@users.noreply.github.com"
+                # git remote set-url origin https://github.com/pmorgtt/project-123.git
+                # git fetch origin
+                # git pull origin main --rebase
+                git add ./bagit ./resources
+                git commit -m "Update bagit and resources"
+                git push -u origin main
+                # git push https://x-access-token:${GITHUB_TOKEN}@github.com/pmorgtt/project-123.git
+
             - name: Run a script
               run: echo "This is a manually triggered workflow"
