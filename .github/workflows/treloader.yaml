@@ -33,14 +33,14 @@ jobs:
                 git config --global user.name "github-actions[bot]"
                 git config --global user.email "github-actions[bot]@users.noreply.github.com"
                 
-                git remote set-url origin https://github.com/pmorgtt/project-123.git
-                git fetch origin
-                git pull origin main --rebase
+                # git remote set-url origin https://github.com/pmorgtt/project-123.git
+                # git fetch origin
+                # git pull origin main --rebase
                 
                 git add ./bagit ./resources
                 git commit -m "Update bagit and resources"
-                # git push -u origin main
-                git push https://x-access-token:${GITHUB_TOKEN}@github.com/pmorgtt/project-123.git
+                git push -u origin main
+                #git push https://x-access-token:${GITHUB_TOKEN}@github.com/pmorgtt/project-123.git
 
             - name: Run a script
               run: echo "This is a manually triggered workflow"
