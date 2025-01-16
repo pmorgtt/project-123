@@ -8,10 +8,21 @@ env:
 
 permissions:
  contents: write
+ issues: write
 
 jobs:
+    
+    ApprovalGate1:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: trstringer/manual-approval@v1
+              with:
+                secret: ${{ github.TOKEN }}
+                approvers: piotrmucha-telefonicatech
+
     Validate:
         runs-on: ubuntu-latest
+        needs: ApprovalGate1
         steps:
             - name: Checkout repository
               uses: actions/checkout@v3
@@ -44,13 +55,4 @@ jobs:
 
             - name: Run a script
               run: echo "This is a manually triggered workflow"
-    
-    ApprovalGate1:
-        runs-on: ubuntu-latest
-        needs: Validate
-        steps:
-            - uses: trstringer/manual-approval@v1
-              with:
-                secret: ${{ github.TOKEN }}
-                approvers: piotrmucha-telefonicatech
           
