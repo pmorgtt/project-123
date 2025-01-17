@@ -11,11 +11,12 @@ permissions:
     issues: write
 
 concurrency:
-    group: trepp-orchestrator
-    cancel-in-progress: false
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
     Validate:
+        if: github.ref == 'refs/heads/main' # Ensures the workflow only runs on the main branch
         runs-on: ubuntu-latest
         steps:
             - name: Checkout repository
