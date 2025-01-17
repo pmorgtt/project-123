@@ -11,17 +11,17 @@
         {
             "@id": "./",
             "@type": "Dataset",
-            "datePublished": "2025-01-17T09:28:54+00:00",
+            "datePublished": "2025-01-17T09:32:37+00:00",
             "description": "This is a test project",
             "hasPart": [
                 {
                     "@id": "governance/project.yaml"
                 },
                 {
-                    "@id": "metadata/dataset_02.yaml"
+                    "@id": "metadata/dataset_01.yaml"
                 },
                 {
-                    "@id": "metadata/dataset_01.yaml"
+                    "@id": "metadata/dataset_02.yaml"
                 }
             ],
             "license": "<a href=\"https://opensource.org/license/mit\">MIT License</a>",
@@ -54,16 +54,16 @@
             "name": "Test Project"
         },
         {
-            "@id": "metadata/dataset_02.yaml",
-            "@type": "File",
-            "description": "OMOP conformant vocabulary data",
-            "name": "vocab"
-        },
-        {
             "@id": "metadata/dataset_01.yaml",
             "@type": "File",
             "description": "OMOP conformant data for antimicrobial stewarship",
             "name": "p_abx"
+        },
+        {
+            "@id": "metadata/dataset_02.yaml",
+            "@type": "File",
+            "description": "OMOP conformant vocabulary data",
+            "name": "vocab"
         }
     ]
 }
