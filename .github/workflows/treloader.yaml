@@ -11,21 +11,23 @@ permissions:
  issues: write
 
 jobs:
-    
-    ApprovalGate1:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: trstringer/manual-approval@v1
-              with:
-                secret: ${{ github.TOKEN }}
-                approvers: piotrmucha-telefonicatech
-
     Validate:
         runs-on: ubuntu-latest
-        needs: ApprovalGate1
         steps:
             - name: Checkout repository
               uses: actions/checkout@v3
+
+            - name: Set up git and take latest changes
+              run: |
+                git config --global user.name "github-actions[bot]"
+                git config --global user.email "github-actions[bot]@users.noreply.github.com"
+                
+                if [ -n "$ACT" ]; then
+                  git remote set-url origin https://github.com/pmorgtt/project-123.git
+                fi
+                
+                git fetch origin
+                git reset --hard origin/main
 
             - name: Clone cr8tor repository
               run: |
@@ -34,25 +36,132 @@ jobs:
                 git clone https://github.com/lsc-sde-crates/cr8tor.git
                 uv sync --directory cr8tor
 
+            - name: Simulate downloading to metadata
+              run: |
+                mkdir -p ./resources/metadata
+                echo "This is a test" > ./resources/metadata/test.txt
+            
             - name: Run cr8tor CLI
               run: |
                 source cr8tor/.venv/bin/activate
                 cr8tor create -i ./resources
 
-            - name: Commit and push changes
+            - name: Push changes to repository
+              run: |
+                git add ./bagit ./resources
+                git commit -m "Update bagit and resources"
+                
+                if [ -n "$ACT" ]; then
+                  git push https://x-access-token:${GITHUB_TOKEN}@github.com/pmorgtt/project-123.git
+                else
+                  git push -u origin main
+                fi
+        
+            - name: Create artifact for validated RO-Crate with metadata 
+              uses: actions/upload-artifact@v4
+              with:
+                name: ro-crate-incl-metadata
+                path: download                
+    
+    SignOff:
+        runs-on: ubuntu-latest
+        needs: Validate
+        steps:
+            # Creates GitHub Issue and pauses the workflow 
+            # until the issue is resolved or 6hr timeout
+            # see details at https://github.com/trstringer/manual-approval
+            - uses: trstringer/manual-approval@v1
+              if: ${{ !env.ACT }}
+              with:
+                secret: ${{ github.TOKEN }}
+                approvers: piotrmucha-telefonicatech
+                minimum-approvals: 1
+                # exclude-workflow-initiator-as-approver: true # Uncomment in production
+          
+    Workflow-Execution:
+        runs-on: ubuntu-latest
+        needs: SignOff
+        steps:
+            - name: Download artifact
+              uses: actions/download-artifact@v4
+              with:
+                name: ro-crate-incl-metadata
+                path: download
+
+            - name: Set up git and take latest changes
               run: |
                 git config --global user.name "github-actions[bot]"
                 git config --global user.email "github-actions[bot]@users.noreply.github.com"
                 
-                # git remote set-url origin https://github.com/pmorgtt/project-123.git
-                # git fetch origin
-                # git pull origin main --rebase
+                if [ -n "$ACT" ]; then
+                  git remote set-url origin https://github.com/pmorgtt/project-123.git
+                fi
                 
+                git fetch origin
+                git reset --hard origin/main
+
+            - name: Clone cr8tor repository
+              run: |
+                wget -qO- https://astral.sh/uv/install.sh | sh
+                export PATH=$HOME/.local/bin:$PATH
+                git clone https://github.com/lsc-sde-crates/cr8tor.git
+                uv sync --directory cr8tor
+
+            # data retrieval will be executed via cr8tor CLI
+            #  data will not be stored in the repository or returned back by microservice
+            #  only the metadata with outputs paths will be returned back cr8tor and repository
+            - name: Simulate ingesting data
+              run: |
+                mkdir -p ./bagit/data/outputs
+                echo "This is a test" > ./bagit/data/outputs/mytable.csv
+            
+            - name: Run cr8tor CLI
+              run: |
+                source cr8tor/.venv/bin/activate
+                cr8tor create -i ./resources
+
+            - name: Push changes to repository
+              run: |
                 git add ./bagit ./resources
                 git commit -m "Update bagit and resources"
-                git push -u origin main
-                #git push https://x-access-token:${GITHUB_TOKEN}@github.com/pmorgtt/project-123.git
+                
+                if [ -n "$ACT" ]; then
+                  git push https://x-access-token:${GITHUB_TOKEN}@github.com/pmorgtt/project-123.git
+                else
+                  git push -u origin main
+                fi
+        
+            - name: Create artifact for validated RO-Crate with metadata 
+              uses: actions/upload-artifact@v4
+              with:
+                name: ro-crate-incl-data
+                path: download  
+    
+    Disclosure:
+        runs-on: ubuntu-latest
+        needs: Workflow-Execution
+        steps:
+            - name: Simulate disclosure cr8tor steps
+              run: echo "cr8tor will run disclosure steps and update ro-crate. No need to run microservices"               
+         
+            # Creates GitHub Issue and pauses the workflow 
+            # until the issue is resolved or 6hr timeout
+            # see details at https://github.com/trstringer/manual-approval
+            - name: Approval for disclosure before Publishing
+              uses: trstringer/manual-approval@v1
+              if: ${{ !env.ACT }}
+              with:
+                secret: ${{ github.TOKEN }}
+                approvers: piotrmucha-telefonicatech
+                minimum-approvals: 1
+                # we can add more description to the issue if needed. Check docs of trstringer/manual-approval
+                # exclude-workflow-initiator-as-approver: true # Uncomment in production
+    
+    PublishPhase:
+        runs-on: ubuntu-latest
+        needs: Disclosure
+        steps:
+            - name: Simulate disclosure cr8tor steps
+              run: echo "cr8tor will run disclosure steps and update ro-crate. No need to run microservices"               
 
-            - name: Run a script
-              run: echo "This is a manually triggered workflow"
-          
+         
