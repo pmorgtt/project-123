@@ -4,5 +4,5 @@ Contact-Email: lsc.sde@test.com
 Contact-Name: LSC SDE Program Team
 External-Identifier: urn:uuid:d90c1f0e-dcb6-a623-0540-02f29b96fb5d
 Organization-Address: Lancashire Teaching Hospitals NHS Trust, PR2 9HT
-Payload-Oxum: 9736.5
+Payload-Oxum: 9751.6
 Source-Organization: LSC SDE
