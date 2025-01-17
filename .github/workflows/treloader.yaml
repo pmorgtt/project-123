@@ -81,6 +81,8 @@ jobs:
               with:
                 secret: ${{ github.TOKEN }}
                 approvers: piotrmucha-telefonicatech
+                issue-title: "ApprovalGate1 - SignOff stage"
+                issue-body: "The ro-crate is validated and includes metadata. Please review and approve or deny the to progress to Workflow Execution phase (data retrieval)."
                 minimum-approvals: 1
                 # exclude-workflow-initiator-as-approver: true # Uncomment in production
           
@@ -163,6 +165,8 @@ jobs:
               with:
                 secret: ${{ github.TOKEN }}
                 approvers: piotrmucha-telefonicatech
+                issue-title: "ApprovalGate2 - Disclosure stage"
+                issue-body: "The ro-crate is validated and includes data output paths. Please review and approve or deny the to progress to Publishing phase."
                 minimum-approvals: 1
                 # we can add more description to the issue if needed. Check docs of trstringer/manual-approval
                 # exclude-workflow-initiator-as-approver: true # Uncomment in production
