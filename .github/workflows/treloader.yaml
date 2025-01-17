@@ -83,6 +83,9 @@ jobs:
         runs-on: ubuntu-latest
         needs: SignOff
         steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
             - name: Download artifact
               uses: actions/download-artifact@v4
               with:
@@ -136,7 +139,8 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                 name: ro-crate-incl-data
-                path: download  
+                path: |
+                    ./bagit              
     
     Disclosure:
         runs-on: ubuntu-latest
