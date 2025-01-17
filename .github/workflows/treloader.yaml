@@ -1,4 +1,4 @@
-name: TREloader Orchestrator
+name: TREPP Orchestrator
 
 on:
     workflow_dispatch:
